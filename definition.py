@@ -18,29 +18,42 @@ class BaseSE(object):
 # Class
 class Text(object):
 	def __init__(self, pos, text, font, color):
-		self.pos = pos
+		self.pos = pos # (x, y) left-top point
 		self.text = text
 		self.font = ImageFont.truetype(*font[: 3]) # (ttf, size, index)
 		self.color = color # (r, g, b)
+		self.size = self._get_image_size()
+		self.img = Image.open('RGB', self.size)
+		
+	def _get_image_size(self):
+		tmp_draw = ImageDraw.Draw(self.img)
+		return tmp_draw.textsize(self.text, self.font)
 		
 	def __image__(self):
-		pass
+		return self.img
 
 class Picture(object):
 	def __init__(self, pos, fp): # fp = path or size
-		self.pos = pos # (x, y)
+		self.pos = pos # (x, y) left-top point
 		self.img = Image.open(fp) if type(fp) == 'str' else Image.new('RGB', fp)
 		self.size = self.img.size # Refer to the same variable
 		
 	def __image__(self):
-		pass
+		return self.img
 		
+'''
 class Graphic(object): # PIL.Image.Image object
-	def __init__(self):
+	def __init__(self, type, params): # params = numbers controlling what does a graphic look like
+		self.pos = pos # (x, y) left-top point
+		self.size = self._get_image_size()
+		self.img = Image.new('RGB', self.size)
+		
+	def _get_image_size(self):
 		pass
 		
 	def __image__(self):
-		pass
+		return self.img
+'''
 
 class Timeline(object):
 	def __init__(self, objects=None):
